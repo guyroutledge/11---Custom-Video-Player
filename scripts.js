@@ -27,11 +27,9 @@ class VideoPlayer {
 		progressBar.style.flexBasis = progress + '%';
 	}
 	scrub = e => {
-		// get current click/mouse position
-		// calculate distance from left edge of player
-		// calculate percentage of player width
-		// update video currentTime -> auto update progress
-		console.log( e );
+		const { video } = this;
+		const percentage = ( e.offsetX / video.clientWidth);
+		video.currentTime = video.duration * percentage
 	}
 	init() {
 		const {
@@ -53,7 +51,6 @@ class VideoPlayer {
 		video.addEventListener( 'timeupdate', handleProgress );
 
 		progress.addEventListener( 'click', scrub );
-		progress.addEventListener( 'mousemove', scrub );
 
 		skipButtons.forEach( button => button.addEventListener( 'click', skip ) );
 		ranges.forEach( range => range.addEventListener( 'change', handleRangeUpdate ) );
