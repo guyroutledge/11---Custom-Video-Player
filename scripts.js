@@ -6,6 +6,7 @@ class VideoPlayer {
 	toggle = document.querySelector( '.toggle' );
 	skipButtons = document.querySelectorAll( '.skip' );
 	ranges = document.querySelectorAll( '.player__slider' );
+	mouseDown = false;
 
 	togglePlay = () => {
 		this.video.paused ? this.video.play() : this.video.pause();
@@ -44,6 +45,7 @@ class VideoPlayer {
 			handleProgress,
 			scrub
 		} = this;
+		let { mouseDown } = this;
 
 		video.addEventListener( 'click', togglePlay );
 		video.addEventListener( 'play', toggleIcon );
@@ -51,6 +53,9 @@ class VideoPlayer {
 		video.addEventListener( 'timeupdate', handleProgress );
 
 		progress.addEventListener( 'click', scrub );
+		progress.addEventListener( 'mousedown', () => mouseDown = true );
+		progress.addEventListener( 'mouseup', () => mouseDown = false );
+		progress.addEventListener( 'mousemove', e => mouseDown && scrub( e ) );
 
 		skipButtons.forEach( button => button.addEventListener( 'click', skip ) );
 		ranges.forEach( range => range.addEventListener( 'change', handleRangeUpdate ) );
