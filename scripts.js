@@ -17,11 +17,33 @@ class VideoPlayer {
 		const amount = parseFloat( e.target.dataset.skip );
 		this.video.currentTime += amount;
 	}
+	handleRangeUpdate = e => {
+		const controlType = e.target.name;
+		this.video[controlType] = e.target.value;
+	}
+	handleProgress = e => {
+		const { video, progressBar } = this;
+		const progress = ( video.currentTime / video.duration ) * 100;
+		progressBar.style.flexBasis = progress + '%';
+	}
 	init() {
-		this.video.addEventListener( 'click', this.togglePlay );
-		this.video.addEventListener( 'play', this.toggleIcon );
-		this.video.addEventListener( 'pause', this.toggleIcon );
-		this.skipButtons.forEach( button => button.addEventListener( 'click', this.skip ) );
+		const {
+			video,
+			skipButtons,
+			ranges,
+			togglePlay,
+			toggleIcon,
+			skip,
+			handleRangeUpdate,
+			handleProgress
+		} = this;
+
+		video.addEventListener( 'click', togglePlay );
+		video.addEventListener( 'play', toggleIcon );
+		video.addEventListener( 'pause', toggleIcon );
+		video.addEventListener( 'timeupdate', handleProgress );
+		skipButtons.forEach( button => button.addEventListener( 'click', skip ) );
+		ranges.forEach( range => range.addEventListener( 'change', handleRangeUpdate ) );
 	}
 }
 const videoPlayer = new VideoPlayer();
