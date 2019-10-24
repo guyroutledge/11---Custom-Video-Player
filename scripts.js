@@ -10,14 +10,13 @@ class VideoPlayer {
 	togglePlay = () => {
 		this.video.paused ? this.video.play() : this.video.pause();
 	}
-	toggleIcon = e => {
-		const icon = this.video.paused ? '►' : '||';
-		e.target.textContent = icon;
+	toggleIcon = () => {
+		this.toggle.textContent = this.video.paused ? '►' : '||';
 	}
 	init() {
 		this.video.addEventListener( 'click', this.togglePlay );
-		this.toggle.addEventListener( 'click', this.togglePlay );
-		this.toggle.addEventListener( 'click', this.toggleIcon );
+		this.video.addEventListener( 'play', this.toggleIcon );
+		this.video.addEventListener( 'pause', this.toggleIcon );
 	}
 }
 const videoPlayer = new VideoPlayer();
