@@ -13,10 +13,15 @@ class VideoPlayer {
 	toggleIcon = () => {
 		this.toggle.textContent = this.video.paused ? '►' : '||';
 	}
+	skip = e => {
+		const amount = parseFloat( e.target.dataset.skip );
+		this.video.currentTime += amount;
+	}
 	init() {
 		this.video.addEventListener( 'click', this.togglePlay );
 		this.video.addEventListener( 'play', this.toggleIcon );
 		this.video.addEventListener( 'pause', this.toggleIcon );
+		this.skipButtons.forEach( button => button.addEventListener( 'click', this.skip ) );
 	}
 }
 const videoPlayer = new VideoPlayer();
