@@ -6,6 +6,7 @@ class VideoPlayer {
 	toggle = document.querySelector( '.toggle' );
 	skipButtons = document.querySelectorAll( '.skip' );
 	ranges = document.querySelectorAll( '.player__slider' );
+	fullScreen = document.querySelector( '.fullscreen' );
 	mouseDown = false;
 
 	togglePlay = () => {
@@ -32,10 +33,23 @@ class VideoPlayer {
 		const percentage = ( e.offsetX / video.clientWidth);
 		video.currentTime = video.duration * percentage
 	}
+	toggleFullScreen = () => {
+		const { video } = this;
+		if ( video.requestFullScreen ) {
+			video.requestFullScreen();
+		} else if ( video.mozRequestFullScreen ) {
+			video.mozRequestFullScreen();
+		} else if ( video.webkitRequestFullScreen ) {
+			video.webkitRequestFullScreen();
+		} else if ( video.msRequestFullScreen ) {
+			video.msRequestFullScreen();
+		}
+	}
 	init() {
 		const {
 			video,
 			skipButtons,
+			fullScreen,
 			progress,
 			ranges,
 			togglePlay,
@@ -43,7 +57,8 @@ class VideoPlayer {
 			skip,
 			handleRangeUpdate,
 			handleProgress,
-			scrub
+			scrub,
+			toggleFullScreen
 		} = this;
 		let { mouseDown } = this;
 
@@ -56,6 +71,8 @@ class VideoPlayer {
 		progress.addEventListener( 'mousedown', () => mouseDown = true );
 		progress.addEventListener( 'mouseup', () => mouseDown = false );
 		progress.addEventListener( 'mousemove', e => mouseDown && scrub( e ) );
+
+		fullScreen.addEventListener( 'click', toggleFullScreen );
 
 		skipButtons.forEach( button => button.addEventListener( 'click', skip ) );
 		ranges.forEach( range => range.addEventListener( 'change', handleRangeUpdate ) );
